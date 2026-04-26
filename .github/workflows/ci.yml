@@ -1,0 +1,37 @@
+# CI: instala, cria a base SQLite, aplica o esquema, semeia e gera o build
+name: CI
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Repositório
+        uses: actions/checkout@v4
+      - name: Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+      - name: Dependências
+        # Mesma estratégia do README: .npmrc + ipv4 first + reinstalação com retries
+        run: npm run install:reliable
+      - name: Ficheiro de ambiente (apenas build)
+        run: cp server/.env.example server/.env
+      - name: Prisma
+        run: |
+          cd server
+          npx prisma generate
+          npx prisma db push
+          npx prisma db seed
+        env:
+          DATABASE_URL: "file:./prisma/test.db"
+      - name: Typecheck (cliente)
+        run: npm run typecheck -w client
+      - name: Compilar monorepo
+        run: npm run build
+      - name: Artifacts do servidor
+        run: test -f server/dist/index.js

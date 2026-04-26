@@ -1,0 +1,38 @@
+# Dependências
+node_modules/
+
+# Build
+client/dist
+server/dist
+
+# Ambiente
+.env
+.env.*.local
+!/.env.example
+/server/.env
+
+# SQLite / Prisma
+server/prisma/*.db
+server/prisma/*.db-journal
+
+# Logs
+*.log
+npm-debug.log*
+logs/
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/*
+!/.vscode/extensions.json
+
+# Testes / coverage
+coverage/
+
+# Cache
+.turbo
+.cache
+*.tsbuildinfo

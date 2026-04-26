@@ -1,0 +1,36 @@
+// Esquema Prisma para SQLite — consultas tipadas e migrações com segurança
+// (sem concatenação de SQL em string no código de aplicação).
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+/// Faixa de conteúdo educacional exibida na área de recomendações.
+model Track {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  /// Categoria lógica: theory | genres | instruments
+  category    String
+  /// Nível: beginner | intermediate | advanced
+  difficulty  String
+  /// URL de imagem (pode apontar para ativos estáticos do cliente).
+  imageUrl    String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+/// Etapas da jornada de aprendizado.
+model LearningPathStep {
+  id          String   @id @default(cuid())
+  order       Int      @unique
+  title       String
+  description String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}

@@ -1,0 +1,9 @@
+# Atualizações de dependências npm
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: "/"
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 10
+    rebase-strategy: auto
